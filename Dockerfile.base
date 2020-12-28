@@ -1,0 +1,13 @@
+FROM alpine:latest as kubescore-fetch
+
+ENV KUBESCORE_VERSION 1.10.0
+
+RUN apk add --no-cache curl
+
+RUN curl -LO --silent https://github.com/zegl/kube-score/releases/download/v${KUBESCORE_VERSION}/kube-score_${KUBESCORE_VERSION}_linux_amd64 && \
+    chmod +x /kube-score_1.10.0_linux_amd64 && \
+    mv /kube-score_1.10.0_linux_amd64 /kubescore
+
+FROM scratch
+
+COPY --from=kubescore-fetch /kubescore .
