@@ -1,6 +1,7 @@
-FROM alpine:latest as kubescore-fetch
+FROM alpine:latest as k8s-lint-toolbox
 
 ENV KUBESCORE_VERSION 1.10.0
+ENV KUBELINTER_VERSION 0.1.6
 
 RUN apk add --no-cache curl
 
@@ -8,6 +9,11 @@ RUN curl -LO --silent https://github.com/zegl/kube-score/releases/download/v${KU
     chmod +x /kube-score_1.10.0_linux_amd64 && \
     mv /kube-score_1.10.0_linux_amd64 /kubescore
 
+RUN curl -LO --silent https://github.com/stackrox/kube-linter/releases/download/${KUBELINTER_VERSION}/kube-linter-linux.zip && \
+    unzip /kube-linter-linux.zip && \
+    chmod +x ./kube-linter
+
 FROM scratch
 
-COPY --from=kubescore-fetch /kubescore .
+COPY --from=k8s-lint-toolbox /kubescore /bin/
+COPY --from=k8s-lint-toolbox /kube-linter /bin/

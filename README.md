@@ -1,6 +1,11 @@
-# kube-score-action
+# k8s-lint-action
 
-A kube-score Github Action
+A Github Action used in the GitOps pipeline to validate YAML/Manifest changes.
+
+This action consists of:
+
+- [kube-score](https://github.com/zegl/kube-score)
+- [kube-linter](https://github.com/stackrox/kube-linter)
 
 ## Getting Started
 
